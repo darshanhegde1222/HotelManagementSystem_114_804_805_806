@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Set background color */
+            font-family: Arial, sans-serif;
+        }
+        .register-container {
+            max-width: 400px;
+            margin: 50px auto; /* Center the container */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .success-message, .error-message {
+            color: green;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <h2 class="text-center">Register</h2>
+
+    <!-- Display success message if it exists -->
+    <p class="success-message" th:if="${successMessage}">[[${successMessage}]]</p>
+    <!-- Display error message if it exists -->
+    <p class="error-message" th:if="${errorMessage}" id="errorMessage">[[${errorMessage}]]</p>
+
+    <form action="/register" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Mobile Number:</label> <!-- Corrected name to match controller parameter -->
+            <input type="tel" id="number" name="number" class="form-control" required> <!-- Corrected name to match controller parameter -->
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+    <p class="text-center mt-3">Already have an account? <a href="/login">Login</a></p> <!-- Link to login page -->
+</div>
+
+<script>
+    // Function to hide error message after 3 seconds
+    setTimeout(function() {
+        var errorMessageElement = document.getElementById("errorMessage");
+        if (errorMessageElement) {
+            errorMessageElement.style.display = "none";
+        }
+    }, 3000);
+</script>
+
+</body>
+</html>

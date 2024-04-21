@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom styles here -->
+    <style>
+        /* Custom styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        /* Add more custom styles here as needed */
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="dashboard-container">
+                <!-- Dashboard Content -->
+                <h2 class="text-center mb-4">Welcome to the Dashboard</h2>
+                <p class="text-center mb-4">You have successfully logged in!</p>
+
+                <!-- Statistics Section -->
+                <div class="row mb-4">
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Rooms</h5>
+                                <p class="card-text" id="totalRooms">50</p>
+                                <h5 class="card-title">Total Single Rooms</h5>
+                                <p class="card-text" id="singleRooms">20</p>
+                                <h5 class="card-title">Total Double Rooms</h5>
+                                <p class="card-text" id="doubleRooms">15</p>
+                                <h5 class="card-title">Total Suite Rooms</h5>
+                                <p class="card-text" id="suiteRooms">15</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Booked Rooms</h5>
+                                <p class="card-text" id="totalBookedRooms">30</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Employees</h5>
+                                <p class="card-text">20</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-container">
+                    <canvas id="roomChart"></canvas>
+                </div>
+
+                <!-- Booked Rooms Section -->
+                <div id="bookedRoomsTable">
+                    <!-- Populate this section dynamically with Thymeleaf or JavaScript -->
+                </div>
+
+                <!-- Add Room Section -->
+                <div id="addRoomSection" class="add-room-section">
+                    <h3 class="text-center mb-3">Add Room</h3>
+                    <form id="addRoomForm" action="/add-room" method="post">
+                        <div class="form-group">
+                            <label for="roomId">Room ID:</label>
+                            <input type="text" class="form-control" id="roomId" name="roomId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="roomType">Room Type:</label>
+                            <select class="form-control" id="roomType" name="roomType" required>
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Add Room</button>
+                    </form>
+                </div>
+
+                <!-- Logout Link -->
+                <a href="/login" class="btn btn-primary btn-block logout-link">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.4/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    // Chart data (replace with actual data if using Thymeleaf)
+    let singleRooms = 20;
+    let doubleRooms = 15;
+    let suiteRooms = 15;
+
+    let data = {
+        labels: ["Single Rooms", "Double Rooms", "Suite Rooms"],
+        datasets: [{
+            data: [singleRooms, doubleRooms, suiteRooms],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)', // Single Rooms color
+                'rgba(54, 162, 235, 0.5)', // Double Rooms color
+                'rgba(255, 206, 86, 0.5)' // Suite Rooms color
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Create pie chart
+    let ctx = document.getElementById('roomChart').getContext('2d');
+    let roomChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            }
+        }
+    });
+
+    // Update card text with data (if using Thymeleaf, replace with Thymeleaf syntax)
+    document.getElementById("totalRooms").innerText = singleRooms + doubleRooms + suiteRooms;
+    document.getElementById("singleRooms").innerText = singleRooms;
+    document.getElementById("doubleRooms").innerText = doubleRooms;
+    document.getElementById("suiteRooms").innerText = suiteRooms;
+</script>
+</body>
+</html>

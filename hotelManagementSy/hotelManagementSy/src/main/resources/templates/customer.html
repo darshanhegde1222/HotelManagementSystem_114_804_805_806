@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom styles here -->
+    <style>
+        /* Custom styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand:hover, .navbar-nav .nav-link:hover {
+            color: #cccccc;
+        }
+        .card {
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-body {
+            background-color: #ffffff;
+            border-radius: 0 0 10px 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Navigation bar -->
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#">Customer Dashboard</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Add your navigation links here -->
+                        <li class="nav-item">
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <!-- Customer details -->
+            <div id="userDetailsTable">
+                <h3 class="text-center mb-3">User Details</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <!-- Display user details -->
+                            <td th:text="${username}"></td>
+                            <td th:text="${email}"></td>
+                            <td th:text="${phone}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Room booking status -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Room Booking Status</h2>
+                </div>
+                <div class="card-body" id="bookingStatus">
+                    <!-- Booking status will be fetched dynamically using JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Make Reservation button -->
+<div class="text-center mt-3">
+    <a href="/reservation" class="btn btn-primary">Make Reservation</a>
+</div>
+
+<!-- Bootstrap and jQuery scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Fetch booking status from the backend
+        $.ajax({
+            url: '/booking-status',
+            type: 'GET',
+            success: function(data) {
+                // Update the HTML with booking status if data is not null
+                if (data) {
+                    $('#bookingStatus').html(data);
+                } else {
+                    $('#bookingStatus').html('<p>No booking status found.</p>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching booking status:', error);
+                $('#bookingStatus').html('<p>Error fetching booking status.</p>');
+            }
+        });
+    });
+</script>
+</body>
+</html>

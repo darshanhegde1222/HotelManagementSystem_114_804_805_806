@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+        .invoice-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .invoice-details table td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+        .item-list table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .item-list table th, .item-list table td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .download-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Hotel Invoice</h1>
+        <p>123 Main Street, City, Country</p>
+        <p>Phone: +1234567890 | Email: info@example.com</p>
+    </div>
+    <div class="invoice-details">
+        <h2>Invoice Details</h2>
+        <table>
+            <tr>
+                <td><strong>Invoice Number:</strong></td>
+                <td th:text="${reservation.id}">INV-2022001</td>
+            </tr>
+            <tr>
+                <td><strong>Date:</strong></td>
+                <td th:text="${reservation.checkin}">April 10, 2024</td>
+            </tr>
+            <tr>
+                <td><strong>Due Date:</strong></td>
+                <td th:text="${reservation.checkout}">April 20, 2024</td>
+            </tr>
+        </table>
+    </div>
+    <div class="item-list">
+        <h3>Item List</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price/Unit</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${reservation.roomType}">Room Booking</td>
+                <td th:text="${reservation.numberOfRooms}">2</td>
+                <td th:text="${reservation.pricePerRoom}">$200</td>
+                <td th:text="${reservation.totalPrice}">$400</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <p><strong>Total Amount Due:</strong> <span th:text="${reservation.totalPrice}">$450</span></p>
+        <p><strong>Payment Terms:</strong> 50% advance, 50% upon checkout</p>
+        <p><strong>Payment Method:</strong> Credit Card</p>
+        <p>Thank you for your stay!</p>
+    </div>
+    <div class="button-container">
+        <a class="download-button" id="downloadLink" href="#" download="invoice.pdf">Download Invoice</a>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+    document.getElementById('downloadLink').addEventListener('click', function () {
+        // Create a new jsPDF instance
+        var pdf = new jsPDF();
+
+        // Get the HTML content of the invoice container
+        var invoiceContent = document.querySelector('.container').innerHTML;
+
+        // Add HTML content to the PDF
+        pdf.html(invoiceContent, {
+            callback: function (pdf) {
+                // Save the PDF as a Blob object
+                var pdfBlob = pdf.output('blob');
+
+                // Create a temporary link element
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(pdfBlob);
+                link.download = 'invoice.pdf'; // File name for the downloaded file
+
+                // Trigger the download
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up
+                document.body.removeChild(link);
+            }
+        });
+    });
+</script>
+</body>
+</html>
